@@ -6,9 +6,26 @@ package mr
 // remember to capitalize all names.
 //
 
-import "os"
-import "strconv"
+import (
+	"os"
+	"strconv"
+	"time"
+)
 
+type TaskType int
+type Status int
+const(
+	MapTask TaskType = iota
+	ReduceTask
+	Done
+)
+
+const(
+	idle Status = iota
+	working
+	timeout
+	completed
+)
 //
 // example to show how to declare the arguments
 // and reply for an RPC.
@@ -24,6 +41,35 @@ type ExampleReply struct {
 
 // Add your RPC definitions here.
 
+// get task
+type Task struct {
+	Id int
+	Typ TaskType
+	FileName []string
+	NReduce int
+	TimeOut time.Duration
+}
+
+type GetTaskArgs struct {
+
+}
+
+type GetTaskReply struct {
+	Task
+	IsComplete bool
+}
+
+// report task status
+
+type ReportArgs struct {
+	Status
+	Id int
+	Typ TaskType
+}
+
+type ReportReply struct {
+
+}
 
 // Cook up a unique-ish UNIX-domain socket name
 // in /var/tmp, for the coordinator.
